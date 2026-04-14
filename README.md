@@ -1,118 +1,121 @@
-# Campus Nutrition Mongo Project
+# Campus Nutrition Tracker - Project 3 (Node + Express + Redis)
 
-## Description
-This project models a campus dining nutrition system using MongoDB. It stores menu data and user activity in a document-based structure.
+## Project Summary
+This project adapts the previous Campus Nutrition database work into an in-memory key-value design using Redis.
 
-## Collections
-- users
-- menuSnapshots
+Implemented Redis feature:
+- Most viewed menu items per user
 
-Link for ERD LucidChart: https://lucid.app/lucidchart/9ebd0c1f-d7f3-420a-a49f-7cb24dadc9d7/edit?viewport_loc=2091%2C-3355%2C3259%2C1478%2C0_0&invitationId=inv_66bee794-734e-433f-9490-70e7b85bd004
+Implemented stack:
+- Node.js
+- Express
+- Redis
 
----
+This repository includes a working CRUD web app and API for the selected Redis data structure.
 
-## Setup
+## What Was Implemented
 
-Run the following command to initialize the database:
+1. Requirements document (textual model, no UML image generated here)
+- See P3_REQUIREMENTS.md
 
-```bash
-mongosh < init.js
-```
+2. Data structures document
+- See REDIS_DATA_STRUCTURES.md
 
----
+3. Redis command/use-case document (includes CRUD)
+- See REDIS_COMMANDS_CRUD.md
 
-## Data Files Included
+4. Basic Node + Express + Redis app with CRUD
+- Backend: app.js
+- Frontend: public/index.html
 
-- `menuSnapshots.json` (Extended JSON)
-- `users.json` (Extended JSON)
-- `menuSnapshots.csv`
-- `users.csv`
+## Redis Data Structure Implemented
 
----
+Primary structure:
+- Sorted set key: mostViewed:{userId}
+- Member value: {itemId}|{itemName}
+- Score: number of views
 
-## Import With mongoimport
+CRUD support:
+- Create item
+- Read user leaderboard
+- Read one item
+- Update exact score/name
+- Increment score
+- Delete one item
+- Delete full leaderboard
 
-Use these commands if you want to load JSON files directly instead of running init.js:
+## API Endpoints
 
-```bash
-mongoimport --db campusNutrition --collection menuSnapshots --file menuSnapshots.json --jsonArray --drop
-mongoimport --db campusNutrition --collection users --file users.json --jsonArray --drop
-```
+Health
+- GET /api/health
 
-You can also import CSV files:
+Leaderboard CRUD
+- POST /api/most-viewed/:userId
+- GET /api/most-viewed/:userId
+- GET /api/most-viewed/:userId/:itemId
+- PUT /api/most-viewed/:userId/:itemId
+- PATCH /api/most-viewed/:userId/:itemId/increment
+- DELETE /api/most-viewed/:userId/:itemId
+- DELETE /api/most-viewed/:userId
 
-```bash
-mongoimport --db campusNutrition --collection menuSnapshots --type csv --headerline --file menuSnapshots.csv --drop
-mongoimport --db campusNutrition --collection users --type csv --headerline --file users.csv --drop
-```
+## Setup Instructions
 
----
+Prerequisites:
+- Node.js 18+
+- Redis server running locally on port 6379 (or set REDIS_URL)
 
-## Import With MongoDB Compass
+1. Install dependencies
 
-1. Open MongoDB Compass and connect to your local instance.
-2. Create or select database `campusNutrition`.
-3. Open collection `menuSnapshots` and click Add Data > Import File.
-4. Choose `menuSnapshots.json` with JSON format, or `menuSnapshots.csv` with CSV format.
-5. Repeat for `users` collection using `users.json` or `users.csv`.
-
----
-
-## Dump and Restore
-
-A pre-populated dump is included in `/dump/campusNutrition/` containing 5 users and 5 menu snapshots with full embedded data.
-
-To restore the database from the dump, run:
-
-```bash
-mongorestore --db campusNutrition --drop ./dump/campusNutrition
-```
-
-To create a new dump from your loaded database:
-
-```bash
-mongodump --db campusNutrition --out ./dump
-```
-
----
-
-## Node + Express App
-
-1. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Make sure MongoDB is running locally on port 27017.
-
-3. Initialize the database:
-```bash
-mongosh < init.js
-```
-
-4. Start the server:
-```bash
-node app.js
-```
-
-5. Open your browser and go to: `http://localhost:3000`
-
----
-
-## Queries
-
-Run each query using the following commands:
+2. Start Redis (example)
 
 ```bash
-mongosh < query1.js
-mongosh < query2.js
-mongosh < query3.js
-mongosh < query4.js
-mongosh < query5.js
+redis-server
 ```
 
----
+3. Start the app
 
-## Notes
-- `menuSnapshots` stores dining hall menus with embedded items and nutrition data.
-- `users` stores user data including goals, meal plans, and consumption history.
+```bash
+npm start
+```
+
+4. Open browser
+
+http://localhost:3000
+
+## Quick API Example
+
+Create item:
+
+```bash
+curl -X POST http://localhost:3000/api/most-viewed/user_001 \
+  -H "Content-Type: application/json" \
+  -d '{"itemId":"item_001","itemName":"Grilled Chicken Bowl","views":1}'
+```
+
+Get leaderboard:
+
+```bash
+curl "http://localhost:3000/api/most-viewed/user_001?limit=10"
+```
+
+Increment item:
+
+```bash
+curl -X PATCH http://localhost:3000/api/most-viewed/user_001/item_001/increment
+```
+
+## Video
+Existing project video link:
+- https://drive.google.com/file/d/1h2R7dolmOp3CWTJK2juibYRfufEayoou/view?usp=sharing
+
+If you record a new Project 3-specific demo, replace this link with the new one.
+
+## AI Disclosure
+Portions of code scaffolding and documentation drafting were assisted by AI (GitHub Copilot). All outputs were reviewed, edited, and validated in this repository.
+
+## Legacy Files
+This repo still contains previous MongoDB project artifacts (init.js, query files, CSV/JSON dumps) for reference from earlier assignments.
