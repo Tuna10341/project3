@@ -110,7 +110,7 @@ curl -X PATCH http://localhost:3000/api/most-viewed/user_001/item_001/increment
 
 ## Video
 Existing project video link:
-- https://drive.google.com/file/d/1h2R7dolmOp3CWTJK2juibYRfufEayoou/view?usp=sharing
+https://drive.google.com/file/d/1NxO7Q2UAf3MP1KJ1gAP6Hakq7CZpCSCq/view?usp=sharing
 
 If you record a new Project 3-specific demo, replace this link with the new one.
 
