@@ -108,11 +108,9 @@ Increment item:
 curl -X PATCH http://localhost:3000/api/most-viewed/user_001/item_001/increment
 ```
 
-## Video
-Existing project video link:
+## Video project video link:
 https://drive.google.com/file/d/1NxO7Q2UAf3MP1KJ1gAP6Hakq7CZpCSCq/view?usp=sharing
 
-If you record a new Project 3-specific demo, replace this link with the new one.
 
 ## AI Disclosure
 Portions of code scaffolding and documentation drafting were assisted by AI (GitHub Copilot). All outputs were reviewed, edited, and validated in this repository.
